@@ -12,7 +12,7 @@ class Hider():
         self.image = Image.open(image)
         self.pxls = self.image.load()
 
-        self.txt = self.get_text(txt)
+        self.txt = list(self.get_text(txt))
         self.pxl_list = []
         self.size = self.set_size()
 
@@ -23,5 +23,5 @@ class Hider():
         return self.image.size
 
     def get_text(self, txt):
-        with open(self.txt, 'r') as f:
+        with open(self.txt, "r") as f:
             return f.read().strip()
