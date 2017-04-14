@@ -1,31 +1,39 @@
 #!/usr/bin/python3
 # coding : utf-8
-import random
-from collections import Counter
+import time
+
 class NumberGenerator():
-    def __init__(self,size,sizeTxt, key = None):
+    def __init__(self,size,size_txt, key = None):
         self.size = size
-        self.size_txt = sizeTxt
+        self.size_txt = size_txt
         if(key):
             self.key = key
+            print(self.key)
         else:
-            self.key = random.randrange(1000000000000,2000000000000)
+            self.key = int(time.time())
             with open("key.txt","w") as f:
-                f.write(str(self.key))
+                f.write(str(self.key)+";"+str(self.size_txt))
+        self.pixels_list = []
+        self.generate_list()
 
     def generate_list(self):
-        pixels_list=[]
         new_key = self.key
         i=0
+        x=0
+        y=0
         while(i<self.size_txt):
-            new_key = new_key * 1103515245 + 12345;
-            new_key = (new_key // 65536) % 32768;
-            if not ((new_key%self.size[0],new_key%self.size[1])) in pixels_list:
-                pixels_list.append((new_key%self.size[0],new_key%self.size[1]))
+            for j in range(2):
+                new_key = (new_key * 9301 + 49297) % 233280
+                if(j==0):
+                    x=new_key%(self.size[0]-1)
+                else:
+                    y=new_key%(self.size[1]-1)
+            if not ((x,y)) in self.pixels_list:
+                self.pixels_list.append((x,y))
                 i+=1
+    def get_pixels_list(self):
+        return self.pixels_list
 
-        print(Counter(pixels_list))
-        print(len(pixels_list))
 
 
 
