@@ -8,7 +8,8 @@ class NumberGenerator():
         self.size_txt = size_txt
         if(key):
             self.key = key
-            print(self.key)
+            print(self.key," ",self.size_txt)
+
         else:
             self.key = int(time.time())
             with open("key.txt","w") as f:
@@ -21,7 +22,7 @@ class NumberGenerator():
         i=0
         x=0
         y=0
-        while(i<self.size_txt):
+        while(i<=self.size_txt):
             for j in range(2):
                 new_key = (new_key * 9301 + 49297) % 233280
                 if(j==0):
