@@ -18,18 +18,8 @@ def main():
     hide = Hide(args.image, args.text, args.key)
     if not (args.extract):
         hide.hide(args.output)
-        print("On cache")
     else:
         hide.unhide(args.output)
-        print("On extrait")
-
-
-
-
-
-
-
-
 
 if __name__ == '__main__':
     main()

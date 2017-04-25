@@ -22,7 +22,7 @@ class Hide():
         self.generator = NumberGenerator(self.size, self.len_txt, self.key)
         self.pxl_list = self.generator.get_pixels_list()
 
-    def hide(self, output="out"):
+    def hide(self, output="out.jpg"):
         x, y = 0, 0
         k = 0
         text = [bin(ord(t))[2:] for t in self.text]
@@ -48,21 +48,18 @@ class Hide():
                     k = 0
         self.image.save(output,quality=100)
 
-    def unhide(self, output="out"):
+    def unhide(self, output):
         text = []
         final_text = []
         for x, y in self.pxl_list:
             for k in range(3):
                 text.append(self.pxls[x, y][k])
 
-        text = [bin(i)[2:][-1:] for i in text]
+        text = [str(i&1) for i in text]
         cnt = 0
         buff = ""
         for c in text:
             if (cnt >= 8):
-                """buff=list(buff)
-                buff.reverse()
-                buff=''.join(buff)"""
                 final_text.append(buff)
                 buff = c
                 cnt = 1
@@ -71,7 +68,11 @@ class Hide():
                 cnt += 1
 
         final_text = [chr(int(i, 2)) for i in final_text]
-        print(''.join(final_text))
+        if(output):
+            with open(output, "w") as f:
+                f.write(''.join(final_text))
+        else:
+            print(''.join(final_text))
 
     def extract_key(self, key):
         if (os.path.isfile(key)):
