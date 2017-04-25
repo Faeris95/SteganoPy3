@@ -5,7 +5,7 @@ import os
 from steganoPy.numberGenerator import NumberGenerator
 
 
-class Hide():
+class Engine():
     def __init__(self, image, text, key):
         self.image = Image.open(image)
         self.pxls = self.image.load()

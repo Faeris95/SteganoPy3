@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 # coding : utf-8
 import argparse
-from steganoPy.hide import Hide
+from steganoPy.engine import Engine
 
 
 def main():
@@ -15,11 +15,11 @@ def main():
     parser.add_argument('-o', '--output')
     args = parser.parse_args()
 
-    hide = Hide(args.image, args.text, args.key)
+    engine = Engine(args.image, args.text, args.key)
     if not (args.extract):
-        hide.hide(args.output)
+        engine.hide(args.output)
     else:
-        hide.unhide(args.output)
+        engine.unhide(args.output)
 
 if __name__ == '__main__':
     main()
