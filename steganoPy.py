@@ -9,7 +9,6 @@ import time
 from PIL import Image
 import os
 
-
 class NumberGenerator():
     """
     NumberGenerator use a pseudo random number generator using a key to find the coordinates of the pixels
