@@ -1,14 +1,14 @@
-#SteganoPy
+# SteganoPy
 Written by Sébastien ROLLAND - Faeris95
 
 SteganoPy can hide text in an image using LSB and pseudo-random number generator with a key (to determine the coordinates of pixels), and recover it.
 
-###Installation of dependent libraries
+### Installation of dependent libraries
 
 sudo python3 -m pip install argparse
 sudo python3 -m pip install pillow
 
-###Running
+### Running
 <strong>Currently working only with PNG images !</strong>
 
 chmod +x steganoPy.py
@@ -22,7 +22,7 @@ To recover text:
 ./steganoPy.py image.png -e -k keyFile.txt -o text.txt
 
 
-###Contact
+### Contact
 Sébastien ROLLAND
 sebastien.rolland@protonmail.com
 
