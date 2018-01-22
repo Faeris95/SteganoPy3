@@ -26,10 +26,3 @@ To recover text:
 ```
 ./steganoPy.py image.png -e -k keyFile.txt -o text.txt
 ```
-
-### Contact
-Sébastien ROLLAND
-
-sebastien.rolland@protonmail.com
-
-I need your help to improve it ;)
