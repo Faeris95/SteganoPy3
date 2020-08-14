@@ -1,4 +1,5 @@
-# SteganoPy
+# SteganoPy [![License](https://img.shields.io/badge/license-Apache%20License%202.0-blue)](https://raw.githubusercontent.com/Faeris95/SteganoPy3/master/LICENSE)
+
 Sébastien ROLLAND - Faeris95
 
 SteganoPy3 hides data such as text in an image using LSB and cryptographycally secure pseudo-random number generator to determine the coordinates of pixels to use.
