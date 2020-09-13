@@ -8,9 +8,8 @@ from PIL import Image, UnidentifiedImageError
 import os
 import sys
 import hashlib
-import hmac
 import secrets
-import base64
+from Crypto.Cipher import ChaCha20
 from math import ceil
 
 VERSION = 2.0
@@ -25,7 +24,7 @@ class NumberGeneratorException(Exception):
 class NumberGenerator():
     """
     NumberGenerator return an iterator on pairs of values generated from
-    HMAC-BLAKE2s PRF
+    ChaCha20 stream cipher used as CSPRNG
     """
 
     def __init__(self, x: int, y: int, key: bytes):
@@ -40,7 +39,7 @@ class NumberGenerator():
 
         self.ctr = bytes(1)
         self.coord = self._generate_coord(x, y)
-        self.prng = hmac.new(key=key, msg=self.ctr, digestmod=hashlib.blake2s)
+        self.prng = ChaCha20.new(key=key, nonce=bytes(8))
 
     def _generate_coord(self, x: int, y: int) -> list:
         """
@@ -60,8 +59,6 @@ class NumberGenerator():
 
     def __next__(self) -> list:
 
-        self.prng.update(self.ctr)
-
         # Increment self.ctr
         next_ctr = int.from_bytes(self.ctr, sys.byteorder) + 1
         self.ctr = next_ctr.to_bytes(
@@ -73,7 +70,7 @@ class NumberGenerator():
         # PRNG result is used to determined index in the
         # list of coordinates that will be used
         index = int.from_bytes(
-            self.prng.digest(), sys.byteorder) % len(self.coord)
+            self.prng.encrypt(self.ctr), sys.byteorder) % len(self.coord)
 
         return self.coord.pop(index)
 
@@ -91,8 +88,9 @@ class SteganoIMGOverflowError(SteganoIMGException):
 class SteganoIMG():
     """
     Hide/Recover a file in/from a PNG image.
-    Used pixels are pseudo-random and chosen thanks HMAC-BLAKE2s, a cryptographycally secure and fast PRF.  # noqa: E501
-    Seed is derivated from the password using 1M iterations of PBKDF2-HMAC-SHA256.
+    Used pixels are determined thanks NumberGenerator instance.
+    Seed is derivated from the password using 1M iterations of
+    PBKDF2-HMAC-SHA256.
     """
 
     def __init__(self, image: str, key: str):
@@ -132,12 +130,10 @@ class SteganoIMG():
         if password:
             key = hashlib.pbkdf2_hmac("sha256", bytes(
                 password, "utf-8"), bytes(), 1000000)
-            b64key = base64.b64encode(key)
         else:
             key = secrets.randbits(256).to_bytes(32, sys.byteorder)
-            b64key = base64.b64encode(key)
 
-        return b64key
+        return key
 
     def _get_data_from_file(self, data_file: str) -> None:
         """

@@ -1,5 +1,4 @@
 # SteganoPy [![License](https://img.shields.io/badge/license-Apache%20License%202.0-blue)](https://raw.githubusercontent.com/Faeris95/SteganoPy3/master/LICENSE)
-
 Sébastien ROLLAND - Faeris95
 
 SteganoPy3 hides data such as text in an image using LSB and cryptographycally secure pseudo-random number generator to determine the coordinates of pixels to use.
@@ -11,7 +10,7 @@ SteganoPy3 replaces LSB of each colour component of each pixels with a bit of da
 ### Cryptography
 
 The key used as seed is derivated with 1M iterations of PBKDF2 with HMAC and SHA-256. 
-HMAC with BLAKE2s computation of the secret and a counter is used as PRNG because it seems it is faster that SHA3 family on modern CPUs. 
+ChaCha20 with 8 bytes nonce encrypts a counter which is used as PRNG.
 
 ### Installation of needed libraries
 ```
